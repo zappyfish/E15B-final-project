@@ -21,6 +21,7 @@ void setup() {
   strip.begin();
   strip.show();
   pinMode(PIN, OUTPUT);
+  Serial.begin(9600);
   
 }
 
@@ -30,8 +31,10 @@ void loop() {
     accelX = CircuitPlayground.motionX();
     accelY = CircuitPlayground.motionY();
     accelXY = sqrt(pow(accelX, 2) + pow(accelY, 2));
+    Serial.print("accelXY: ");Serial.println(accelXY);
     if(accelXY != 0) {
       period = getPeriod(accelXY);
+      Serial.print("period: "); Serial.println(period);
       // ledFraction = period*(LEDwidth/circumference)
       drawSinusoid(period);
     }
@@ -40,7 +43,7 @@ void loop() {
 
 double getPeriod(float accelXY) {
   // v^2/r = a ==> v = sqrt(ar)
-  float linVelocity = sqrt(accelXY*radius);
+  float linVelocity = sqrt(accelXY*9.8*radius);
   // v = c/T ==> T = c/v
   return (circumference/linVelocity);
   
@@ -58,7 +61,13 @@ void drawSinusoid(float period) {
   float coefficient = (6.28318530718)/(periodperwave); // divide periodperwave by 2pi in order to get the correct coefficient for micros() when we pass it to sin. This is because w = 2pif = 2pi/T. Thus, if we want a period of periodperwave, we must have the
   // coefficient be 2pi/T
   while(micros() <end_time) {
-      strip.setPixelColor((int)(4+4*sin(micros()*coefficient)), 255, 255, 255);
+      Serial.println(4+4*sin(micros()*coefficient));
+      for(int i = 0; i<8; i++) {
+      strip.setPixelColor(i, 0, 0, 0);
+      strip.show();
+    }
+      strip.setPixelColor((int)(4+4*sin(micros()*coefficient)), 255, 0, 0);
+      strip.show();
   }
  
   
