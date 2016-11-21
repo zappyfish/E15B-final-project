@@ -6,7 +6,7 @@
 #define radius .0635 // 2.5 inches is .0635 meters
 #define circumference .0398982267 // 2pir = circumference
 #define LEDwidth .005 // 5 mm / 5 mm
-#define numWaves 3
+#define numWaves 9
 #define PIN 9
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, PIN);
@@ -47,6 +47,7 @@ double getPeriod(float accelXY) {
   // v = c/T ==> T = c/v
   return (circumference/linVelocity);
   
+  
 }
 
 void drawSinusoid(float period) {
@@ -55,6 +56,8 @@ void drawSinusoid(float period) {
   int ledFraction = 1000000 * period/numLEDs; // this is the amount of time an LED should stay lit i.e. the period
   // of time for which a wait for a new action (in uSecs)
   */
+  float LEDtime;
+  LEDtime = 1000000*period*LEDwidth/circumference;
   long start_time = micros();
   long end_time = start_time + (period*1000000);
   float periodperwave = 1000000 * period/numWaves; // this is the period of each of our waves in microseconds
@@ -68,6 +71,7 @@ void drawSinusoid(float period) {
     }
       strip.setPixelColor((int)(4+4*sin(micros()*coefficient)), 255, 0, 0);
       strip.show();
+      
   }
  
   

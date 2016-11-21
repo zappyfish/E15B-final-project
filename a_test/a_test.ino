@@ -75,8 +75,11 @@ void loop() {
   if(accelXY != 0) {
       period = getPeriod(accelXY);
       //drawLetter(h, period);
+      //delayMicroseconds(period * 1000000);
       //drawLetter(i, period);
+      //delayMicroseconds(period * 1000000);
       drawLetter(heart, period);
+      delayMicroseconds(period * 1000000);
       
   }
   
