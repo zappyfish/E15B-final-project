@@ -1,12 +1,15 @@
 #include <Adafruit_CircuitPlayground.h>
+#include <Adafruit_NeoPixel.h>
 #include <Wire.h>
 #include <SPI.h>
 
-#define radius .0635; // 2.5 inches is .0635 meters
-#define circumference .0398982267; // 2pir = circumference
-#define LEDwidth .005; // 5 mm / 5 mm
-#define numWaves 3;
+#define radius .0635 // 2.5 inches is .0635 meters
+#define circumference .0398982267 // 2pir = circumference
+#define LEDwidth .005 // 5 mm / 5 mm
+#define numWaves 3
+#define PIN 9
 
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, PIN);
 
 
 
@@ -15,19 +18,24 @@ float period, accelX, accelY, accelXY;
 void setup() {
   // put your setup code here, to run once:
   CircuitPlayground.begin();
-  pinMode(9, OUTPUT);
+  strip.begin();
+  strip.show();
+  pinMode(PIN, OUTPUT);
   
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(accelX != 0 || accelY!=0) {
-    float accelX = CircuitPlayground.motionX();
-    float accelY = CircuitPlayground.motionY();
+    
+    accelX = CircuitPlayground.motionX();
+    accelY = CircuitPlayground.motionY();
     accelXY = sqrt(pow(accelX, 2) + pow(accelY, 2));
-    period = getPeriod(accelXY);
-    // ledFraction = period*(LEDwidth/circumference)
+    if(accelXY != 0) {
+      period = getPeriod(accelXY);
+      // ledFraction = period*(LEDwidth/circumference)
+      drawSinusoid(period);
     }
+    
 }
 
 double getPeriod(float accelXY) {
@@ -50,7 +58,7 @@ void drawSinusoid(float period) {
   float coefficient = (6.28318530718)/(periodperwave); // divide periodperwave by 2pi in order to get the correct coefficient for micros() when we pass it to sin. This is because w = 2pif = 2pi/T. Thus, if we want a period of periodperwave, we must have the
   // coefficient be 2pi/T
   while(micros() <end_time) {
-      writeNeoPix(4+sin(micros()*coefficient));
+      strip.setPixelColor((int)(4+4*sin(micros()*coefficient)), 255, 255, 255);
   }
  
   
