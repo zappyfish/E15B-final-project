@@ -147,15 +147,19 @@ void loop() {
   accelXY = sqrt(pow(accelX, 2) + pow(accelY, 2));
   if(accelXY != 0) {
       period = getPeriod(accelXY);
-      //drawLetter(h, period);
-      //delayMicroseconds(period * 1000000);
-      //drawLetter(i, period);
-      //delayMicroseconds(period * 1000000);
+      Serial.print("accelXY: ");Serial.println(accelXY);
+      Serial.print("period: ");Serial.println(period);
+      
       drawLetter(i, period);
+      delayMicroseconds(1000000*period);
       drawLetter(heart, period);
+      delayMicroseconds(1000000*period);
       drawLetter(e, period);
+      delayMicroseconds(1000000*period);
       drawLetter(n, period);
+      delayMicroseconds(1000000*period);
       drawLetter(g, period);
+      
       
       
   }
@@ -164,7 +168,8 @@ void loop() {
 
 double getPeriod(float accelXY) {
   // v^2/r = a ==> v = sqrt(ar)
-  float linVelocity = sqrt(accelXY*9.8*radius);
+  if(accelXY > .5) accelXY-=.5;
+  float linVelocity = sqrt(accelXY*radius);
   // v = c/T ==> T = c/v    
   return (circumference/linVelocity);
 }
@@ -175,18 +180,18 @@ void drawLetter(const int let[8][7], float period) {
     for(int i = 0; i<8; i++) {
       if(let[i][j] == 1) {
         strip.setPixelColor(7-i, 150, 0, 0);
+        
       }
     }
     strip.show();
-    delayMicroseconds((int)(LEDtime/6));
+    //delayMicroseconds((int)(LEDtime/100));
     for(int i = 0; i< 8; i++) {
     strip.setPixelColor(i, 0, 0, 0);
     strip.show();
-    
-  }
-  delayMicroseconds((int)(LEDtime/6));
+      }
+  
   
   }
-  delayMicroseconds((1000000*period));
+  delayMicroseconds((int)(LEDtime));
 }
 

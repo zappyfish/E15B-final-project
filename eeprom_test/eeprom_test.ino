@@ -15,7 +15,7 @@ void setup() {
   CircuitPlayground.begin();
   strip.begin();
   strip.show();
-  maxAccel = EEPROM.read(addr) ;
+  maxAccel = EEPROM.read(addr);
 }
 
 void loop() {
@@ -29,7 +29,7 @@ void loop() {
     EEPROM.write(addr, (int)accelXY);
     maxAccel = accelXY;
     for(int i = 0; i<8; i++) {
-      strip.setPixelColor(i, 255, 255, 255);
+      strip.setPixelColor(i, 100, 100, 100);
       strip.show();
     }
     delay(500);
