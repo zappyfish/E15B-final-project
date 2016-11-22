@@ -6,7 +6,7 @@
 #define radius .0635 // 2.5 inches is .0635 meters
 #define circumference .0398982267 // 2pir = circumference
 #define LEDwidth .005 // 5 mm / 5 mm
-#define numWaves 9
+#define numWaves 10
 #define PIN 9
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(8, PIN);
