@@ -1,5 +1,6 @@
-#include <Adafruit_CircuitPlayground.h>
 #include <Adafruit_NeoPixel.h>
+#include <Adafruit_CircuitPlayground.h>
+
 #include <Wire.h>
 #include <SPI.h>
 
